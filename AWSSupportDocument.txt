@@ -1,0 +1,37 @@
+Infrastructure Support Document
+
+
+AWS S3
+
+
+1. Delete Folder 1 : aws s3 rm s3://my-bucket/folder1 --recursive
+2. Delete Folder1 Folder Using Web Console 
+   1. open s3 web console
+   2. open desired desired bucket (my-bucket)
+   3. navigate to desired folder in the bucket.
+   4. right click on the folder and select delete option from drop down menu
+   5. click “ok” when browser alerts to confirm operation
+1. To remove a file from S3 Bucket : aws s3 rm s3://my-bucket/path/to/file
+
+
+Dynamo DB
+
+
+1. Delete Table : aws dynamodb delete-table --table-name my_order_table
+2. Create Table : aws dynamodb create-table --table-name my_order_table --attribute-definitions "[{    \"AttributeName\": \"member_id\",    \"AttributeType\": \"S\"  },{    \"AttributeName\": \"date_id\",    \"AttributeType\": \"S\"  },{    \"AttributeName\": \"transaction_id\",    \"AttributeType\": \"S\"  }]" --key-schema "[  {    \"AttributeName\": \"member_id\",    \"KeyType\": \"HASH\"  },{    \"AttributeName\": \"date_id\",    \"KeyType\": \"RANGE\"  }]" --provisioned-throughput "{  \"ReadCapacityUnits\": 15,  \"WriteCapacityUnits\": 15}" --global-secondary-indexes "[  {    \"IndexName\": \"transaction_id-index\",    \"KeySchema\": [      {        \"AttributeName\": \"transaction_id\",        \"KeyType\": \"HASH\"      }    ],    \"Projection\": {      \"ProjectionType\": \"INCLUDE\",      \"NonKeyAttributes\": [\"member_id\", \"date_id\", \"transaction_id\"]    },    \"ProvisionedThroughput\": {      \"ReadCapacityUnits\": 15,      \"WriteCapacityUnits\": 20    }  }]"
+3. Truncate Order Table : Delete Order Table + Create Order Table                                                                  
+4. You can also use web console to create table and secondary indexes.
+
+
+
+
+Elastic Beanstalk Worker
+
+
+1. Set Environment Variable : eb setenv NODE_ENV=production
+2. Status : eb status
+3. To restart the worker : aws elasticbeanstalk restart-app-server --environment-name my-worker-platform
+
+
+
+Note :  Before using aws cli commands please install aws cli tools, and configure aws using “aws configure” command. For Using eb command please install eb cli.
